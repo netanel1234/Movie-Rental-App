@@ -9,6 +9,7 @@ const rentals = require("./routes/rentals");
 const users = require("./routes/users");
 const auth = require("./routes/auth");
 const express = require("express");
+const cors = require("cors");
 
 const app = express();
 
@@ -24,6 +25,12 @@ mongoose
   .then(() => console.log("Connected to MongoDB..."))
   .catch((err) => console.log("Could not connect to MongoDB..."));
 
+const corsOptions = {
+  origin: "http://localhost:3001",
+  credentials: true,
+};
+
+app.use(cors(corsOptions));
 app.use(express.json());
 app.use("/api/genres", genres);
 app.use("/api/customers", customers);
