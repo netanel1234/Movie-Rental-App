@@ -5,7 +5,7 @@ It is possible to choose a specific movie or search for movies according to a ce
 Authentication and Authorization are applied.
 (Still working on it).   
 
-##### Backend
+#### Backend
 Node.js, Express.js, MongoDB 
 #### Frontend
 React.js, Bootstrat 5.
