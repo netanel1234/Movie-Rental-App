@@ -1,7 +1,7 @@
 import React from "react";
 import Joi from "joi-browser";
 import { getGenres } from "../services/genreService";
-import { getMovie, getMovies, saveMovie } from "../services/movieService";
+import { getMovie, saveMovie } from "../services/movieService";
 import Form from "./common/form";
 import { useParams, useNavigate } from "react-router-dom";
 

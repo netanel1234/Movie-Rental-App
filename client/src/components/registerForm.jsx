@@ -1,14 +1,16 @@
 import React from "react";
 import Joi from "joi-browser";
 import Form from "./common/form";
+import * as userService from "../services/userService";
+import { useNavigate } from "react-router-dom";
+
+function withHistory(Component) {
+  return (props) => <Component {...props} navigate={useNavigate()} />;
+}
 
 class RegisterForm extends Form {
   state = {
-    data: {
-      username: "",
-      password: "",
-      name: "",
-    },
+    data: { username: "", password: "", name: "" },
     errors: {},
   };
 
@@ -18,8 +20,18 @@ class RegisterForm extends Form {
     name: Joi.string().required().label("Name"),
   };
 
-  doSubmit = () => {
-    console.log("Submitted");
+  doSubmit = async () => {
+    try {
+      const response = await userService.register(this.state.data);
+      localStorage.setItem("token", response.headers["x-auth-token"]);
+      this.props.navigate("/");
+    } catch (ex) {
+      if (ex.response && ex.response.status === 400) {
+        const errors = { ...this.state.errors };
+        errors.username = ex.response.data;
+        this.setState({ errors });
+      }
+    }
   };
 
   render() {
@@ -37,4 +49,4 @@ class RegisterForm extends Form {
   }
 }
 
-export default RegisterForm;
+export default withHistory(RegisterForm);
