@@ -1,6 +1,7 @@
-import React from "react";
+import React, { Component } from "react";
 import { Navigate, Route, Routes } from "react-router-dom";
 import { ToastContainer } from "react-toastify";
+import jwtDecode from "jwt-decode";
 import Movies from "./components/movies";
 import MovieForm from "./components/movieForm";
 import Customers from "./components/customers";
@@ -9,30 +10,44 @@ import NotFound from "./components/notFound";
 import NavBar from "./components/navBar";
 import LoginForm from "./components/loginForm";
 import RegisterForm from "./components/registerForm";
+import Logout from "./components/logout";
 import "react-toastify/dist/ReactToastify.css";
 import "./App.css";
 
-function App() {
-  return (
-    <React.Fragment>
-      <ToastContainer />
-      <NavBar />
-      <main className="container">
-        <Routes>
-          <Route path="/register" element={<RegisterForm />} />
-          <Route path="/login" element={<LoginForm />} />
-          <Route path="/movies/new" element={<MovieForm />} />
-          <Route path="/movies/:id" element={<MovieForm />} />
-          <Route path="/movies" element={<Movies />} />
-          <Route path="/customers" element={<Customers />} />
-          <Route path="/rentals" element={<Rentals />} />
-          <Route path="/not-found" element={<NotFound />} />
-          <Route path="/" element={<Navigate replace to="/movies" />} />
-          <Route path="*" element={<Navigate replace to="/not-found" />} />
-        </Routes>
-      </main>
-    </React.Fragment>
-  );
+class App extends Component {
+  state = { user: "" };
+
+  componentDidMount() {
+    try {
+      const jwt = localStorage.getItem("token");
+      const user = jwtDecode(jwt);
+      this.setState({ user });
+    } catch (ex) {}
+  }
+
+  render() {
+    return (
+      <React.Fragment>
+        <ToastContainer />
+        <NavBar user={this.state.user} />
+        <main className="container">
+          <Routes>
+            <Route path="/register" element={<RegisterForm />} />
+            <Route path="/login" element={<LoginForm />} />
+            <Route path="/logout" element={<Logout />} />
+            <Route path="/movies/new" element={<MovieForm />} />
+            <Route path="/movies/:id" element={<MovieForm />} />
+            <Route path="/movies" element={<Movies />} />
+            <Route path="/customers" element={<Customers />} />
+            <Route path="/rentals" element={<Rentals />} />
+            <Route path="/not-found" element={<NotFound />} />
+            <Route path="/" element={<Navigate replace to="/movies" />} />
+            <Route path="*" element={<Navigate replace to="/not-found" />} />
+          </Routes>
+        </main>
+      </React.Fragment>
+    );
+  }
 }
 
 export default App;
