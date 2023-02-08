@@ -8,4 +8,4 @@ Authentication and Authorization are applied.
 #### Backend
 Node.js, Express.js, MongoDB 
 #### Frontend
-React.js, Bootstrat 5.
+React.js, Bootstrap 5.
